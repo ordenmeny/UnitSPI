@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from djangoProject.custom_router import EnhancedAPIRouter
 from rest_framework.routers import APIRootView
 from events_app.api.views.events import EventViewSet
@@ -22,10 +22,11 @@ router.APIRootView = HubAPIRootView
 
 router.register('events', EventViewSet, 'event')
 router.register('users', UserViewSet, 'user')
-# router.register('token', ViewSetTokenObtain, 'token')
 
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api/token/', CustomTokenObtainView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
+    re_path(r'^auth/', include('djoser.urls')),
+    re_path(r'^auth/', include('djoser.urls.jwt')),
 ]
