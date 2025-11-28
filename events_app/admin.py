@@ -2,13 +2,12 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
-from events.models import EventModel
+from events_app.models.events import EventModel
 
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('first_name', 'last_name', 'email')
     list_display_links = ('first_name', 'last_name', 'email')
-    # list_editable = ('chat_id', )
 
     fields_to_set = ('email', 'first_name', 'last_name',)
     fieldsets = (
