@@ -4,7 +4,7 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
-    chat_id = models.CharField(max_length=50, null=True, blank=True)
+    chat_id = models.IntegerField(null=True, blank=True)
     tg_link = models.CharField(max_length=255, null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
