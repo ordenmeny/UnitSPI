@@ -3,10 +3,6 @@ from djangoProject.custom_router import EnhancedAPIRouter
 from rest_framework.routers import APIRootView
 from events_app.api.views.events import EventViewSet
 from events_app.api.views.users import UserViewSet
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
 from events_app.api.views.users import CustomTokenObtainView, CustomTokenRefreshView
 
 
