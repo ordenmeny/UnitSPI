@@ -10,6 +10,7 @@ dependencies = [
     "djoser>=2.3.3",
     "python-dotenv>=1.2.1",
     "psycopg[binary]>=3.2.9",
+    "django-cors-headers>=4.9.0",
 ]
 
 [dependency-groups]

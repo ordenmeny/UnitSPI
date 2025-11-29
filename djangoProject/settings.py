@@ -11,7 +11,12 @@ DEBUG = str_to_bool(os.getenv("DEBUG", "True"))
 
 SECURE_COOKIE = str_to_bool(os.getenv("SECURE_COOKIE", "False"))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'uniplace.unimatch.ru',
+    'www.uniplace.unimatch.ru',
+    'localhost',
+    '127.0.0.1'
+]
 
 # Application definition
 
@@ -26,11 +31,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'djoser',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -102,7 +109,6 @@ USE_TZ = True
 
 USE_I18N = True
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "events_app.CustomUser"
@@ -172,3 +178,18 @@ if str_to_bool(os.getenv("DOCKER_PROJECT")):
     STATIC_ROOT = "/vol/web/static"
 else:
     MEDIA_ROOT = BASE_DIR / "media_dev"
+
+CORS_ALLOWED_ORIGINS = [
+    'http://uniplace.unimatch.ru',
+    'http://www.uniplace.unimatch.ru',
+    'https://uniplace.unimatch.ru',
+    'https://www.uniplace.unimatch.ru',
+]
+CSRF_TRUSTED_ORIGINS = [
+    'http://uniplace.unimatch.ru',
+    'http://www.uniplace.unimatch.ru',
+    'https://uniplace.unimatch.ru',
+    'https://www.uniplace.unimatch.ru',
+]
+
+CORS_ALLOW_CREDENTIALS = True
