@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
@@ -24,9 +25,14 @@ class UserViewSet(ModelViewSet):
         permission_classes=[CustomIsAuthenticated])
     def me(self, request):
         user = request.user
-
         serializer = self.get_serializer(user)
+
         return Response(serializer.data)
+
+    def get_permissions(self):
+        if self.action in ['retrieve', 'destroy', 'list', 'partial_update']:
+            return [IsAdminUser()]
+        return super().get_permissions()
 
 
 class CustomTokenObtainView(APIView):
