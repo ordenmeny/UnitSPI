@@ -1,18 +1,15 @@
 from pathlib import Path
 from datetime import timedelta
+import os
+from .utils import str_to_bool
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+SECRET_KEY = os.getenv("SECRET_KEY", "abcdef")
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-43@9oo%)-!g!+7xvsahq918isb!=(h08^hy0x4wvycut)7kzfi'
+DEBUG = str_to_bool(os.getenv("DEBUG", "True"))
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-SECURE_COOKIE = False
+SECURE_COOKIE = str_to_bool(os.getenv("SECURE_COOKIE", "False"))
 
 ALLOWED_HOSTS = []
 
@@ -61,15 +58,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'djangoProject.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if str_to_bool(os.getenv("DOCKER_PROJECT")):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "HOST": os.getenv("DB_HOST"),
+            "NAME": os.getenv("DB_NAME"),
+            "USER": os.getenv("DB_USER"),
+            "PASSWORD": os.getenv("DB_PASS"),
+            "PORT": "5432",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -96,7 +102,6 @@ USE_TZ = True
 
 USE_I18N = True
 
-STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -153,9 +158,17 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'events_app.utils.exceptions.custom_exception_handler',
 }
 
-
 DJOSER = {
     'SERIALIZERS': {
         'current_user': 'events_app.api.serializers.users.UserSerializer',
     },
 }
+
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
+
+if str_to_bool(os.getenv("DOCKER_PROJECT")):
+    MEDIA_ROOT = "/vol/web/media"
+    STATIC_ROOT = "/vol/web/static"
+else:
+    MEDIA_ROOT = BASE_DIR / "media_dev"
