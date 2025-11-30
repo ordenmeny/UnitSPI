@@ -6,10 +6,10 @@ from events_app.models.events import EventModel
 
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ('first_name', 'last_name', 'email')
+    list_display = ('first_name', 'last_name', 'email', 'chat_id')
     list_display_links = ('first_name', 'last_name', 'email')
 
-    fields_to_set = ('email', 'first_name', 'last_name',)
+    fields_to_set = ('email', 'first_name', 'last_name', 'chat_id')
     fieldsets = (
         (None, {"fields": ("username", "password")}),
         (_("Personal info"), {"fields": fields_to_set}),
